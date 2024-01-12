@@ -18,10 +18,20 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const HOME = '/home';
-
+    
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
      */
+    protected function mapWebRoutes()
+{
+    Route::middleware('web')
+        ->namespace($this->namespace)
+        ->group(base_path('routes/web.php')); // Ini mengarahkan ke file web.php yang berisi rute-rute web biasa
+
+    Route::middleware('web')
+        ->namespace($this->namespace)
+        ->group(base_path('routes/web-auth.php')); // Ini mengarahkan ke file web-auth.php yang bisa berisi rute-rute yang berkaitan dengan autentikasi, seperti login, registrasi, atau verifikasi email
+}
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
