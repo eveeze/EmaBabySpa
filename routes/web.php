@@ -68,10 +68,12 @@ Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
 Route::get('/email/verify', [VerificationController::class, 'show'])->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+
 // Rute otentikasi yang dihasilkan oleh make:auth
 
 Auth::routes();
