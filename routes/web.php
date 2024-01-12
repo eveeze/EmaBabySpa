@@ -8,6 +8,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,8 +24,9 @@ use App\Http\Controllers\Auth\VerificationController;
 // routes/web.php
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', compact('comments'));
 })->name('welcome');
+Route::get('/welcome', 'CommentController@welcome')->name('welcome');
 
 Route::get('/home', function () {
     return view('home');
@@ -73,6 +75,8 @@ Route::get('/email/verify', [VerificationController::class, 'show'])->name('veri
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])->name('verification.verify');
 Route::post('/email/resend', [VerificationController::class, 'resend'])->name('verification.resend');
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
+Route::resource('comments', CommentController::class)->except(['show']);
+Route::post('/add-comment', [CommentController::class, 'store'])->name('add.comment');
 
 // Rute otentikasi yang dihasilkan oleh make:auth
 

@@ -178,6 +178,41 @@
     @include('partials.services')
     <!-- Customer Ratings Section -->
     @include('partials.customer')
+   <!-- Comment Section -->
+<!-- Comment Section -->
+<section id="comment-section" class="py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Customer Comments</h2>
+
+        <!-- Comment Form -->
+        @auth
+            <form action="{{ route('add.comment') }}" method="post">
+                @csrf
+                <div class="form-group">
+                    <label for="content">Add Comment:</label>
+                    <textarea name="content" id="content" class="form-control" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        @else
+            <p>Login to add comments.</p>
+        @endauth
+
+        <!-- Tampilkan komentar yang sudah ada -->
+        @isset($comments)
+            @forelse($comments as $comment)
+                <div class="card mb-3 bg-black">
+                    <div class="card-body">
+                        <p class="card-text">{{ $comment->content }}</p>
+                        <small class="text-muted">Posted by: {{ $comment->user->name }}</small>
+                    </div>
+                </div>
+            @empty
+                <p>No comments available.</p>
+            @endforelse
+        @endisset
+    </div>
+</section>
     <!-- Contact Section -->
     @include('partials.contact')
 
