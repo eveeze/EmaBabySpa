@@ -12,10 +12,9 @@ class CommentController extends Controller
     public function index()
     {
         // Retrieve all comments
-        $comments = Comment::with('user')->get();
-
-        // Pass comments to the view
-        return view('welcome', compact('comments'));
+        $comments = Comment::all();
+        return view('comment', ['comments' => $comments]);
+    
     }
 
     public function store(Request $request)
@@ -38,44 +37,48 @@ class CommentController extends Controller
     }
 
 
-    public function edit($id)
+        public function edit(Request $request, $id)
     {
-        // Find the comment by ID
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
+        
+        // Validate and update the comment
+        $request->validate([
+            'content' => 'required|string',
+        ]);
 
-        // Check if the user is authorized to edit the comment
-        $this->authorize('update', $comment);
+        $comment->content = $request->input('content');
+        $comment->save();
 
-        return view('comments.edit', compact('comment'));
+        // Return the updated comment
+        return response()->json(['comment' => $comment]);
     }
 
     public function update(Request $request, $id)
     {
         // Validation rules for updating the comment
-        $rules = [
+        $request->validate([
             'content' => 'required|min:3',
-        ];
-
-        $request->validate($rules);
-
+        ]);
+    
         // Find the comment by ID
-        $comment = Comment::find($id);
-
+        $comment = Comment::findOrFail($id);
+    
         // Check if the user is authorized to update the comment
+    
         $this->authorize('update', $comment);
-
+    
         // Update the comment
         $comment->update([
             'content' => $request->input('content'),
         ]);
-
-        return redirect()->back()->with('success', 'Comment updated successfully.');
+    
+        return redirect('/')->with('success', 'Comment updated successfully.');
     }
 
     public function destroy($id)
     {
         // Find the comment by ID
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
 
         // Check if the user is authorized to delete the comment
         $this->authorize('delete', $comment);

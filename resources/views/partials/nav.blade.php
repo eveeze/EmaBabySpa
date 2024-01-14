@@ -40,37 +40,37 @@
         }
 
         @media (max-width: 991.98px) {
-            .collapse.navbar-collapse {
-                position: absolute;
-                top: 41px;
-                left: 0;
-                background-color: #75C4F1;
-                padding: 10px;
-                border-radius: 0 0 5px 5px;
-                box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-                width: 100%;
-                text-align: left;
-            }
-
             .navbar-nav {
                 margin-left: auto;
             }
 
             .navbar-nav .nav-item {
                 text-align: left;
+                margin-bottom: 10px;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav.hello-user {
+                text-align: center;
+            }
+
+            .navbar-nav.hello-user .login-register {
+                display: inline-block;
+                margin-top: 10px;
             }
         }
 
         @media (min-width: 992px) {
-            .navbar-nav {
-                margin-left: auto !important;
+            .login-register {
+                display: inline-block;
             }
         }
     </style>
 </head>
 <body>
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light justify-content-between fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light justify-content-between">
         <a class="navbar-brand font-bold" href="/">Ema Baby Spa</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -84,36 +84,37 @@
                     <a class="nav-link" href="{{ route('services') }}">Services</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('forum') }}">Forum</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/#customer-rating">Customer Ratings</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/#contact">Contact</a>
                 </li>
             </ul>
-        </div>
-        <div class="navbar-nav">
-        @if (Auth::check())
-            <div class="dropdown">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <!-- Ganti dengan ikon/gambar profil user jika tersedia -->
-                    <img src="gambar-profil.png" alt="Profile" width="30" height="30" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" href="{{ route('profile') }}">Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                            @csrf
-                        </form>
-                        <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                    </li>
-                </ul>
+            <!-- Pindahkan elemen login dan register ke sini -->
+            <div class="navbar-nav hello-user">
+                @if (Auth::check())
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            Hello, {{ Auth::user()->name }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                            <li>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                                <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                @else
+                    <a href="#" class="btn btn-primary login-register" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
+                    <a href="#" class="btn btn-primary login-register" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
+                @endif
             </div>
-        @else
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
-            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
-        @endif
-    </div>
+        </div>
     </nav>
     <!-- Modal -->
     <!-- Modal Login -->

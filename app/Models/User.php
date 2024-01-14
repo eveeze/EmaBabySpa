@@ -42,4 +42,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function save(array $options = [])
+    {
+        // Your custom save logic, or just call the parent method
+        return parent::save($options);
+    }
 }
+

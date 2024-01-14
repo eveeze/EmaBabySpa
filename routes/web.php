@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ServiceController;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileController; // Import ProfileController
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerificationController;
@@ -66,8 +66,7 @@ Route::middleware(['auth'])->group(function () {
         return view('dashboard');
     });
 });
-Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-Route::get('/profile', [ProfileController::class, 'show'])->name('profile');
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegisterController::class, 'register'])->name('register.submit');
@@ -77,6 +76,10 @@ Route::post('/email/resend', [VerificationController::class, 'resend'])->name('v
 Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
 Route::resource('comments', CommentController::class)->except(['show']);
 Route::post('/add-comment', [CommentController::class, 'store'])->name('add.comment');
+Route::get('/forum', [CommentController::class, 'index'])->name('forum');
+Route::put('/comment/{id}/edit', [CommentController::class, 'edit'])->name('edit.comment');
+Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('delete.comment');
+
 
 // Rute otentikasi yang dihasilkan oleh make:auth
 
